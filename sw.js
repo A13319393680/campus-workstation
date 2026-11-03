@@ -1,5 +1,5 @@
-/* 离线缓存：让手机装到桌面后，断网也能打开、能记录 */
-const CACHE = 'campus-ws-v2';
+﻿/* 离线缓存：让手机装到桌面后，断网也能打开、能记录 */
+const CACHE = 'campus-ws-v3';
 const ASSETS = [
   './',
   './index.html',

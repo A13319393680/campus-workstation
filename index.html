@@ -6,7 +6,7 @@
 <title>校园工作站</title>
 <meta name="theme-color" content="#4f6ef7">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏫</text></svg>">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v=3">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -85,13 +85,55 @@
 <div id="modalRoot"></div>
 <div id="toastRoot" class="toast-root"></div>
 
-<script src="assets/app.js"></script>
+<div id="bootTip" hidden style="position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;background:#1b2340;color:#fff;padding:16px 18px;border-radius:14px;font:13px/1.6 -apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;box-shadow:0 18px 40px rgba(0,0,0,.35)">
+  <strong id="bootTipTitle" style="display:block;font-size:14px;margin-bottom:4px"></strong>
+  <div id="bootTipMsg" style="opacity:.85;word-break:break-word"></div>
+  <div style="opacity:.55;font-size:11.5px;margin-top:8px">把这段文字发给我，能更快定位问题。</div>
+</div>
+
+<script src="assets/app.js?v=3"></script>
 <script>
-  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('./sw.js').catch(function () {});
+  /* 自检：样式或脚本没加载成功时，直接在屏幕上说清楚 */
+  (function () {
+    function tip(title, msg) {
+      var box = document.getElementById('bootTip');
+      if (!box) return;
+      document.getElementById('bootTipTitle').textContent = title;
+      document.getElementById('bootTipMsg').textContent = msg;
+      box.removeAttribute('hidden');
+    }
+    window.addEventListener('error', function (e) {
+      if (e.target && e.target.tagName === 'SCRIPT') {
+        tip('脚本没加载成功', '找不到 assets/app.js。检查 GitHub 仓库里是不是少了 assets 文件夹。');
+        return;
+      }
+      if (e.message) tip('脚本报错了', e.message + (e.filename ? '（' + e.filename.split('/').pop() + ' 第 ' + e.lineno + ' 行）' : ''));
+    }, true);
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var hasCss = false;
+      var sheets = document.styleSheets || [];
+      for (var i = 0; i < sheets.length; i++) {
+        try { if (sheets[i].cssRules && sheets[i].cssRules.length) hasCss = true; } catch (err) { hasCss = true; }
+      }
+      if (!hasCss) {
+        tip('样式没加载', '找不到 assets/style.css。检查 GitHub 仓库里 assets 文件夹是不是完整。');
+        return;
+      }
+      setTimeout(function () {
+        var v = document.getElementById('view');
+        if (v && !v.children.length) {
+          tip('页面没渲染出来', '先在浏览器地址栏打开「网站地址/assets/app.js」，如果显示 404，说明文件没传全。');
+        }
+      }, 2000);
     });
-  }
+
+    if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js').catch(function () { });
+      });
+    }
+  })();
 </script>
 </body>
 </html>
