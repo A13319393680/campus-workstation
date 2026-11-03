@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>校园工作站</title>
+<meta name="theme-color" content="#4f6ef7">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏫</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="校园工作站">
+</head>
+<body>
+
+<div class="bg-blobs" aria-hidden="true">
+  <span class="blob b1"></span>
+  <span class="blob b2"></span>
+  <span class="blob b3"></span>
+</div>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">校</div>
+      <div class="brand-text">
+        <strong id="brandName">校园工作站</strong>
+        <span id="brandSub">我的学习与我的一亩三分地</span>
+      </div>
+    </div>
+
+    <nav class="nav" id="nav">
+      <button class="nav-item is-active" data-act="nav" data-view="overview">
+        <svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6V11h-6v9Zm0-16v5h6V4h-6Z"/></svg>
+        <span>概览</span>
+      </button>
+      <button class="nav-item" data-act="nav" data-view="study">
+        <svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5Zm0 7.5L5 7.1V13l7 3.5 7-3.5V7.1l-7 3.4Z"/></svg>
+        <span>学习</span>
+      </button>
+      <button class="nav-item" data-act="nav" data-view="report">
+        <svg viewBox="0 0 24 24"><path d="M5 3h14a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm2 3v2h10V6H7Zm0 4v2h10v-2H7Zm0 4v2h6v-2H7Z"/></svg>
+        <span>周报</span>
+      </button>
+      <button class="nav-item" data-act="nav" data-view="map">
+        <svg viewBox="0 0 24 24"><path d="M15 4.5 9 2.6 3.6 4.4A1 1 0 0 0 3 5.3v15.2c0 .7.7 1.2 1.4.9L9 19.6l6 1.9 5.4-1.8c.4-.1.6-.5.6-.9V3.6c0-.7-.7-1.2-1.4-.9L15 4.5Zm-1 13.9-4-1.3V5.6l4 1.3v11.5Z"/></svg>
+        <span>地图</span>
+      </button>
+      <button class="nav-item" data-act="nav" data-view="settings">
+        <svg viewBox="0 0 24 24"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.4h-4l-.3 2.6c-.6.2-1.2.6-1.7 1l-2.4-1-2 3.4L6.6 11a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.8 1.7 1l.3 2.6h4l.3-2.6c.6-.2 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6ZM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/></svg>
+        <span>设置</span>
+      </button>
+    </nav>
+
+    <div class="save-card" id="saveCard">
+      <div class="save-dot" id="saveDot"></div>
+      <div class="save-text">
+        <strong id="saveTitle">本地存储</strong>
+        <span id="saveDesc">点这里绑定数据文件</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 id="pageTitle">概览</h1>
+        <p id="pageSub">今天也慢慢来，先把手里的事排明白。</p>
+      </div>
+      <div class="topbar-right">
+        <div class="today-pill" id="todayPill">—</div>
+        <button class="btn btn-primary" id="quickAdd">
+          <svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z"/></svg>
+          记一笔
+        </button>
+      </div>
+    </header>
+
+    <div id="view" class="view"></div>
+  </main>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot" class="toast-root"></div>
+
+<script src="assets/app.js"></script>
+<script>
+  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
